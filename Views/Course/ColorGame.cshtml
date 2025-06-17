@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "Renk Seçme Oyunu";
+    Layout = "_Layout";
+}
+<h2 class="text-center my-4">Renk Seçme Oyunu</h2>
+<p class="text-center">Aşağıda verilen rengi bul ve tıkla!</p>
+<div class="text-center mb-4">
+    <span id="color-question" style="font-size:1.5rem; font-weight:bold;"></span>
+</div>
+<div class="d-flex justify-content-center flex-wrap" id="color-buttons" style="gap: 20px; min-height: 100px;"></div>
+<div class="text-center mt-4">
+    <button class="btn btn-primary" onclick="startColorGame()">Yeniden Başlat</button>
+    <span id="color-status" class="ms-3"></span>
+</div>
+@section Scripts {
+<script>
+    const colors = [
+        { name: 'Kırmızı', code: '#FF0000' },
+        { name: 'Mavi', code: '#0000FF' },
+        { name: 'Yeşil', code: '#00FF00' },
+        { name: 'Sarı', code: '#FFFF00' },
+        { name: 'Turuncu', code: '#FFA500' },
+        { name: 'Mor', code: '#800080' }
+    ];
+    let correctColor = null;
+
+    function startColorGame() {
+        document.getElementById('color-status').textContent = '';
+        // Rastgele bir renk seç
+        correctColor = colors[Math.floor(Math.random() * colors.length)];
+        document.getElementById('color-question').textContent = correctColor.name + ' rengini bul!';
+        // Renk butonlarını karıştır
+        const shuffled = [...colors].sort(() => Math.random() - 0.5);
+        const btnDiv = document.getElementById('color-buttons');
+        btnDiv.innerHTML = '';
+        shuffled.forEach(color => {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-lg';
+            btn.style.background = color.code;
+            btn.style.color = '#fff';
+            btn.style.width = '100px';
+            btn.style.height = '60px';
+            btn.style.fontWeight = 'bold';
+            btn.style.fontSize = '1.2rem';
+            btn.textContent = color.name;
+            btn.onclick = function() { selectColor(color); };
+            btnDiv.appendChild(btn);
+        });
+    }
+
+    function selectColor(color) {
+        if (color.name === correctColor.name) {
+            document.getElementById('color-status').textContent = 'Tebrikler, doğru rengi seçtin!';
+        } else {
+            document.getElementById('color-status').textContent = 'Yanlış, tekrar dene!';
+        }
+    }
+
+    // Başlangıçta başlat
+    startColorGame();
+</script>
+} 

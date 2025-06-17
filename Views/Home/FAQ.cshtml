@@ -1,0 +1,75 @@
+@{
+    ViewData["Title"] = "Sıkça Sorulan Sorular";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h1 class="display-4 fw-bold text-primary mb-3">Sıkça Sorulan Sorular</h1>
+                <p class="lead text-muted">Otizmli çocuklar için eğitim platformumuz hakkında merak ettiğiniz her şey</p>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="faq-question p-4 bg-light rounded-3 shadow-sm">
+                        <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                            <span>Platformunuz nasıl çalışır?</span>
+                            <i class="fas fa-chevron-down text-primary"></i>
+                        </h5>
+                    </div>
+                    <div class="faq-answer p-4 bg-white rounded-3 shadow-sm mt-2">
+                        <p class="mb-0">Platformumuz, otizmli çocuklar için özel olarak tasarlanmış eğitim programları sunar. Veliler ve eğitmenler, çocukların gelişimini takip edebilir ve özelleştirilmiş eğitim planları oluşturabilir.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="faq-question p-4 bg-light rounded-3 shadow-sm">
+                        <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                            <span>Eğitim programları nelerdir?</span>
+                            <i class="fas fa-chevron-down text-primary"></i>
+                        </h5>
+                    </div>
+                    <div class="faq-answer p-4 bg-white rounded-3 shadow-sm mt-2">
+                        <p class="mb-0">Eğitim programlarımız, otizmli çocukların ihtiyaçlarına göre özelleştirilmiştir. Sosyal beceriler, iletişim, öz bakım ve akademik beceriler gibi alanlarda destek sağlar.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item mb-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="faq-question p-4 bg-light rounded-3 shadow-sm">
+                        <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                            <span>Nasıl kayıt olabilirim?</span>
+                            <i class="fas fa-chevron-down text-primary"></i>
+                        </h5>
+                    </div>
+                    <div class="faq-answer p-4 bg-white rounded-3 shadow-sm mt-2">
+                        <p class="mb-0">Ana sayfadaki "VELİ OLARAK KAYIT OL" veya "EĞİTMEN OLARAK KAYIT OL" butonlarına tıklayarak kayıt işleminizi başlatabilirsiniz.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item mb-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="faq-question p-4 bg-light rounded-3 shadow-sm">
+                        <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                            <span>Destek alabilir miyim?</span>
+                            <i class="fas fa-chevron-down text-primary"></i>
+                        </h5>
+                    </div>
+                    <div class="faq-answer p-4 bg-white rounded-3 shadow-sm mt-2">
+                        <p class="mb-0">Evet, 7/24 destek hizmetimiz mevcuttur. Herhangi bir sorunuz veya ihtiyacınız olduğunda bizimle iletişime geçebilirsiniz.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.faq-question').click(function() {
+                $(this).next('.faq-answer').slideToggle(300);
+                $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
+            });
+        });
+    </script>
+} 

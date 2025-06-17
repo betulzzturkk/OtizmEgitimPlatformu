@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "Şekiller";
+    Layout = "_InstructorLayout";
+}
+
+<div class="container py-5">
+    <div class="row mb-3">
+        <div class="col-12">
+            <a href="/Instructor/Education" class="btn btn-outline-secondary" style="position: absolute; left: 20px; top: 20px; z-index: 10;"><i class="fas fa-arrow-left me-2"></i>Geri Dön</a>
+        </div>
+    </div>
+    <div class="text-center mb-5" data-aos="fade-up">
+        <h1 class="display-4 fw-bold text-primary mb-3">Şekiller</h1>
+        <p class="lead text-muted">Şekilleri tanı, seslerini dinle ve özelliklerini öğren!</p>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="card h-100 shadow-lg border-0 text-center p-4 shape-card" style="background: linear-gradient(135deg, #FFB347 0%, #6B48FF 100%); color: #fff; border-radius: 25px;">
+                <img src="/images/shapes/daire.jpg" alt="Daire" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover;">
+                <h4>Daire</h4>
+                <p>Yuvarlak ve köşesiz bir şekil.</p>
+                <button class="btn btn-outline-light mb-3" onclick="playSound('/sounds/shapes/daire.mp3')"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="card h-100 shadow-lg border-0 text-center p-4 shape-card" style="background: linear-gradient(135deg, #FFB347 0%, #6B48FF 100%); color: #fff; border-radius: 25px;">
+                <img src="/images/shapes/kare.jpg" alt="Kare" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover;">
+                <h4>Kare</h4>
+                <p>Dört eşit kenarı ve dört köşesi vardır.</p>
+                <button class="btn btn-outline-light mb-3" onclick="playSound('/sounds/shapes/kare.mp3')"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="card h-100 shadow-lg border-0 text-center p-4 shape-card" style="background: linear-gradient(135deg, #FFB347 0%, #6B48FF 100%); color: #fff; border-radius: 25px;">
+                <img src="/images/shapes/ucgen.jpg" alt="Üçgen" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover;">
+                <h4>Üçgen</h4>
+                <p>Üç kenarı ve üç köşesi vardır.</p>
+                <button class="btn btn-outline-light mb-3" onclick="playSound('/sounds/shapes/ucgen.mp3')"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+            </div>
+        </div>
+        <!-- Diğer şekil kartları da Parent/Shapes.cshtml'deki gibi eklenebilir -->
+    </div>
+</div>
+<script>
+function playSound(path) {
+    var audio = new Audio(path);
+    audio.play();
+}
+</script> 

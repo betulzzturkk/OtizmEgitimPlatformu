@@ -1,0 +1,165 @@
+@model AutismEducationPlatform.Web.Models.ViewModels.ChildViewModel
+@{
+    ViewData["Title"] = "Çocuk Ekle";
+    Layout = "~/Views/Shared/_ParentLayout.cshtml";
+}
+<div class="container py-4">
+    <h2 class="mb-4">Çocuk Ekle</h2>
+    <form asp-action="AddChild" method="post">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Ad Soyad</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Diagnosis" class="form-label">Tanı</label>
+            <input asp-for="Diagnosis" class="form-control" placeholder="Örn: Otizm, Dikkat Eksikliği..." />
+            <span asp-validation-for="Diagnosis" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Age" class="form-label">Yaş</label>
+            <input asp-for="Age" class="form-control" type="number" min="2" max="18" />
+            <span asp-validation-for="Age" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">İlgi Alanları</label>
+            <input type="text" id="interestInput" class="form-control mb-2" placeholder="Bir ilgi alanı yazıp Enter'a basın" />
+            <div id="interestsTags" class="mb-2"></div>
+            <input type="hidden" asp-for="Interests" id="Interests" />
+            <small class="text-muted">Birden fazla ilgi alanı ekleyebilirsiniz.</small>
+            <span asp-validation-for="Interests" class="text-danger"></span>
+        </div>
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        </div>
+    </form>
+</div>
+@if (ViewBag.Children != null && ((List<AutismEducationPlatform.Web.Models.ViewModels.ChildViewModel>)ViewBag.Children).Count > 0)
+{
+    <div class="container mt-5">
+        <h4 class="mb-3" style="color:#2193b0; font-weight:600;">Mevcut Çocuklar</h4>
+        @foreach (var child in (List<AutismEducationPlatform.Web.Models.ViewModels.ChildViewModel>)ViewBag.Children)
+        {
+            <div class="child-info-box mb-4">
+                <div class="child-info-title">@child.Name (@child.Age) yaşında</div>
+                <div class="child-info-detail">
+                    <span class="child-info-label">Tanı:</span> @(string.IsNullOrWhiteSpace(child.Diagnosis) ? "Belirtilmemiş" : child.Diagnosis)
+                </div>
+                <div class="child-info-detail">
+                    <span class="child-info-label">Özel Gereksinimler:</span> @(string.IsNullOrWhiteSpace(child.SpecialNeeds) ? "Belirtilmemiş" : child.SpecialNeeds)
+                </div>
+                <div class="child-info-detail">
+                    <span class="child-info-label">Eklenme Tarihi:</span> @child.CreatedAt.ToShortDateString()
+                </div>
+                <div class="child-info-tags mt-3">
+                    <span class="child-info-label">İlgi Alanları:</span>
+                    @if (!string.IsNullOrWhiteSpace(child.Interests))
+                    {
+                        var tags = child.Interests.Split(',');
+                        foreach (var tag in tags)
+                        {
+                            var t = tag.Trim().ToLower();
+                            string icon = t switch {
+                                var s when s.Contains("müzik") => "<i class='fas fa-music me-1'></i>",
+                                var s when s.Contains("resim") => "<i class='fas fa-paint-brush me-1'></i>",
+                                var s when s.Contains("dans") => "<i class='fas fa-person-dots-from-line me-1'></i>",
+                                var s when s.Contains("renk") => "<i class='fas fa-palette me-1'></i>",
+                                var s when s.Contains("hayvan") => "<i class='fas fa-dog me-1'></i>",
+                                var s when s.Contains("spor") => "<i class='fas fa-futbol me-1'></i>",
+                                _ => "<i class='fas fa-star me-1'></i>"
+                            };
+                            <span class="child-info-tag" style="font-size:1.15rem; padding:8px 20px; margin-bottom:10px;">
+                                @Html.Raw(icon) @tag.Trim()
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="child-info-tag" style="background:#eee; color:#888;">Belirtilmemiş</span>
+                    }
+                </div>
+                <div class="d-flex gap-2 mt-3">
+                    <a href="/Parent/EditChild/@child.Id" class="btn btn-sm btn-outline-primary">Düzenle</a>
+                    <button type="button" class="btn btn-sm btn-outline-danger" 
+                            onclick="confirmDelete(@child.Id, '@child.Name')">
+                        <i class="fas fa-trash-alt me-1"></i>Sil
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Çocuk Silme Onayı</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><span id="childName"></span> isimli çocuğu silmek istediğinizden emin misiniz?</p>
+                <p class="text-danger"><i class="fas fa-exclamation-triangle me-2"></i>Bu işlem geri alınamaz!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <form id="deleteForm" asp-action="DeleteChild" method="post" style="display: inline;">
+                    <input type="hidden" id="childId" name="id" />
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+    // İlgi alanı tag input scripti
+    const input = document.getElementById('interestInput');
+    const tagsDiv = document.getElementById('interestsTags');
+    const hiddenInput = document.getElementById('Interests');
+    let tags = [];
+    if (hiddenInput.value) {
+        tags = hiddenInput.value.split(',').map(x => x.trim()).filter(x => x);
+        renderTags();
+    }
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && input.value.trim() !== '') {
+            e.preventDefault();
+            if (!tags.includes(input.value.trim())) {
+                tags.push(input.value.trim());
+                renderTags();
+            }
+            input.value = '';
+        }
+    });
+    function renderTags() {
+        tagsDiv.innerHTML = '';
+        tags.forEach((tag, i) => {
+            const tagEl = document.createElement('span');
+            tagEl.className = 'badge bg-primary me-1 mb-1';
+            tagEl.textContent = tag + ' ';
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'btn-close btn-close-white btn-sm ms-1';
+            removeBtn.style.fontSize = '0.7em';
+            removeBtn.onclick = () => {
+                tags.splice(i, 1);
+                renderTags();
+            };
+            tagEl.appendChild(removeBtn);
+            tagsDiv.appendChild(tagEl);
+        });
+        hiddenInput.value = tags.join(',');
+    }
+
+    function confirmDelete(id, name) {
+        document.getElementById('childId').value = id;
+        document.getElementById('childName').textContent = name;
+        var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        modal.show();
+    }
+    </script>
+} 

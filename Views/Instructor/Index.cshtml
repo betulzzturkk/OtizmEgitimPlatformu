@@ -1,0 +1,319 @@
+@model AutismEducationPlatform.Web.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Eğitmen Paneli";
+}
+
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="welcome-card bg-primary text-white rounded-3 p-4">
+                <h2 class="mb-3">Hoş Geldiniz, @Model.Name @Model.Surname</h2>
+                <p class="lead mb-0">Eğitmen panelinizden tüm eğitim süreçlerini yönetebilirsiniz.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+            <div class="stats-card bg-white rounded-3 p-4 shadow-sm h-100">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="stats-icon bg-primary text-white rounded-circle p-3 me-3">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3 class="h5 mb-0">Eğitimler</h3>
+                </div>
+                <h4 class="display-6 mb-2">12</h4>
+                <p class="text-muted mb-0">Aktif Eğitim</p>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="stats-card bg-white rounded-3 p-4 shadow-sm h-100">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="stats-icon bg-success text-white rounded-circle p-3 me-3">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="h5 mb-0">Öğrenciler</h3>
+                </div>
+                <h4 class="display-6 mb-2">48</h4>
+                <p class="text-muted mb-0">Toplam Öğrenci</p>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="stats-card bg-white rounded-3 p-4 shadow-sm h-100">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="stats-icon bg-info text-white rounded-circle p-3 me-3">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="h5 mb-0">Saatler</h3>
+                </div>
+                <h4 class="display-6 mb-2">124</h4>
+                <p class="text-muted mb-0">Eğitim Saati</p>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="stats-card bg-white rounded-3 p-4 shadow-sm h-100">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="stats-icon bg-warning text-white rounded-circle p-3 me-3">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="h5 mb-0">Puanlama</h3>
+                </div>
+                <h4 class="display-6 mb-2">4.8</h4>
+                <p class="text-muted mb-0">Ortalama Puan</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">Son Aktiviteler</h5>
+                </div>
+                <div class="card-body">
+                    <div class="activity-item d-flex align-items-center mb-3">
+                        <div class="activity-icon bg-success-light text-success rounded-circle p-2 me-3">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0">Yeni bir öğrenci kaydoldu</p>
+                            <small class="text-muted">2 saat önce</small>
+                        </div>
+                    </div>
+                    <div class="activity-item d-flex align-items-center mb-3">
+                        <div class="activity-icon bg-primary-light text-primary rounded-circle p-2 me-3">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0">Yeni eğitim içeriği eklendi</p>
+                            <small class="text-muted">5 saat önce</small>
+                        </div>
+                    </div>
+                    <div class="activity-item d-flex align-items-center">
+                        <div class="activity-icon bg-warning-light text-warning rounded-circle p-2 me-3">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0">Yeni bir yorum yapıldı</p>
+                            <small class="text-muted">1 gün önce</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">Yaklaşan Dersler</h5>
+                </div>
+                <div class="card-body">
+                    <div class="upcoming-class d-flex align-items-center mb-3">
+                        <div class="class-icon bg-primary-light text-primary rounded p-3 me-3">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Temel Matematik</h6>
+                            <p class="mb-0 text-muted">
+                                <i class="fas fa-calendar-alt me-2"></i>Pazartesi, 14:00
+                            </p>
+                        </div>
+                    </div>
+                    <div class="upcoming-class d-flex align-items-center mb-3">
+                        <div class="class-icon bg-success-light text-success rounded p-3 me-3">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Sanat Etkinliği</h6>
+                            <p class="mb-0 text-muted">
+                                <i class="fas fa-calendar-alt me-2"></i>Salı, 15:30
+                            </p>
+                        </div>
+                    </div>
+                    <div class="upcoming-class d-flex align-items-center">
+                        <div class="class-icon bg-info-light text-info rounded p-3 me-3">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Müzik Dersi</h6>
+                            <p class="mb-0 text-muted">
+                                <i class="fas fa-calendar-alt me-2"></i>Çarşamba, 13:00
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chatbot Kutusu -->
+<div id="chatbot" style="position: fixed; bottom: 20px; right: 20px; width: 320px; max-height: 500px; background-color: #fff; border: 1px solid #ccc; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); display: none; flex-direction: column; z-index: 9999;">
+    <div class="chat-header">
+        <div class="d-flex align-items-center">
+            <div class="chatbot-avatar me-2">
+                <i class="fas fa-robot fa-lg"></i>
+            </div>
+            <div>
+                <h5 class="mb-0">Yardımcı Asistan</h5>
+                <small class="text-muted">Size nasıl yardımcı olabilirim?</small>
+            </div>
+        </div>
+        <button class="btn-close btn-close-white" onclick="toggleChat()"></button>
+    </div>
+    <div id="chatMessages" style="padding: 10px; overflow-y: auto; flex-grow: 1; max-height: 350px;"></div>
+    <div style="display: flex; padding: 8px; border-top: 1px solid #ddd;">
+        <input type="text" id="chatInput" placeholder="Sorunuzu yazın..." style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+        <button id="micBtn" type="button" style="margin-left: 8px;"><i class="fas fa-microphone"></i></button>
+        <button onclick="sendMessage()" style="margin-left: 8px; background: linear-gradient(135deg, #6B48FF 0%, #FF6B6B 100%); color: white; border: none; padding: 8px 12px; border-radius: 4px;">Gönder</button>
+    </div>
+</div>
+
+<!-- Açma Butonu -->
+<button id="chatbotToggleBtn" onclick="toggleChatbot()" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: linear-gradient(135deg, #6B48FF 0%, #FF6B6B 100%); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; font-size: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease;">
+    <i class="fas fa-robot"></i>
+</button>
+
+<style>
+#chatbot {
+    transition: all 0.3s ease;
+}
+#chatbot:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+#chatInput:focus {
+    outline: none;
+    border-color: #6B48FF;
+    box-shadow: 0 0 0 2px rgba(107, 72, 255, 0.2);
+}
+button:hover {
+    transform: scale(1.05);
+}
+#chatMessages::-webkit-scrollbar {
+    width: 6px;
+}
+#chatMessages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+#chatMessages::-webkit-scrollbar-thumb {
+    background: #6B48FF;
+    border-radius: 3px;
+}
+#chatMessages::-webkit-scrollbar-thumb:hover {
+    background: #FF6B6B;
+}
+.chatbot-avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #6f42c1, #fd7e14);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.chatbot-avatar i {
+    font-size: 1.5rem;
+}
+</style>
+
+<script>
+    function toggleChatbot() {
+        const bot = document.getElementById("chatbot");
+        const button = document.getElementById("chatbotToggleBtn");
+        if (bot.style.display === "none") {
+            bot.style.display = "flex";
+            button.style.display = "none";
+            button.style.transform = "scale(1.1)";
+            setTimeout(() => button.style.transform = "scale(1)", 300);
+        } else {
+            bot.style.display = "none";
+            button.style.display = "flex";
+            button.style.transform = "scale(0.9)";
+            setTimeout(() => button.style.transform = "scale(1)", 300);
+        }
+    }
+    function speakText(text) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'tr-TR';
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+    async function sendMessage() {
+        const input = document.getElementById("chatInput");
+        const message = input.value.trim();
+        if (!message) return;
+        appendMessage("Siz", message);
+        input.value = "";
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        });
+        if (response.ok) {
+            const data = await response.json();
+            appendMessage("Yardımcı Asistan", data.reply);
+            speakText(data.reply);
+        } else {
+            appendMessage("Yardımcı Asistan", "Bir hata oluştu. Lütfen tekrar deneyin.");
+        }
+    }
+    function appendMessage(sender, message) {
+        const chat = document.getElementById("chatMessages");
+        const div = document.createElement("div");
+        div.style.marginBottom = "12px";
+        div.style.padding = "8px 12px";
+        div.style.borderRadius = "8px";
+        div.style.maxWidth = "80%";
+        if (sender === "Siz") {
+            div.style.backgroundColor = "#6B48FF";
+            div.style.color = "white";
+            div.style.marginLeft = "auto";
+        } else {
+            div.style.backgroundColor = "#f0f0f0";
+            div.style.color = "#333";
+            div.style.marginRight = "auto";
+        }
+        div.innerHTML = `<strong>${sender}:</strong><br>${message}`;
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight;
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("chatInput").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                sendMessage();
+            }
+        });
+        // Sesli giriş (Speech-to-Text)
+        const micBtn = document.getElementById('micBtn');
+        const chatInput = document.getElementById('chatInput');
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'tr-TR';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            micBtn.addEventListener('click', function() {
+                recognition.start();
+            });
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                chatInput.value = transcript;
+            };
+            recognition.onerror = function(event) {
+                alert('Sesli algılama başarısız: ' + event.error);
+            };
+        } else {
+            micBtn.disabled = true;
+            micBtn.title = "Tarayıcınız sesli giriş desteklemiyor.";
+        }
+    });
+</script> 

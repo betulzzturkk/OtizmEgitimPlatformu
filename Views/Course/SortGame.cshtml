@@ -1,0 +1,55 @@
+@{
+    ViewData["Title"] = "Sayı Sıralama Oyunu";
+    Layout = "_Layout";
+}
+<h2 class="text-center my-4">Sayı Sıralama Oyunu</h2>
+<p class="text-center">Karışık sayıları küçükten büyüğe sırayla tıkla!</p>
+<div class="d-flex justify-content-center flex-wrap" id="sort-buttons" style="gap: 20px; min-height: 100px;"></div>
+<div class="text-center mt-4">
+    <button class="btn btn-primary" onclick="startSortGame()">Yeniden Başlat</button>
+    <span id="sort-status" class="ms-3"></span>
+</div>
+@section Scripts {
+<script>
+    let sortNumbers = [];
+    let sortIndex = 0;
+    function startSortGame() {
+        sortNumbers = [];
+        for (let i = 1; i <= 5; i++) sortNumbers.push(i);
+        sortNumbers = sortNumbers.sort(() => Math.random() - 0.5);
+        sortIndex = 1;
+        drawSortButtons();
+        document.getElementById('sort-status').textContent = '';
+    }
+    function drawSortButtons() {
+        const btnDiv = document.getElementById('sort-buttons');
+        btnDiv.innerHTML = '';
+        sortNumbers.forEach(num => {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-lg btn-info';
+            btn.style.width = '70px';
+            btn.style.height = '70px';
+            btn.style.fontWeight = 'bold';
+            btn.style.fontSize = '1.5rem';
+            btn.textContent = num;
+            btn.onclick = function() { selectSort(num); };
+            btnDiv.appendChild(btn);
+        });
+    }
+    function selectSort(num) {
+        if (num === sortIndex) {
+            sortNumbers = sortNumbers.filter(n => n !== num);
+            sortIndex++;
+            if (sortNumbers.length === 0) {
+                document.getElementById('sort-status').textContent = 'Tebrikler! Tüm sayıları doğru sıraladın!';
+            } else {
+                drawSortButtons();
+            }
+        } else {
+            document.getElementById('sort-status').textContent = 'Yanlış! Küçükten büyüğe sırayla tıkla.';
+        }
+    }
+    // Başlangıçta başlat
+    startSortGame();
+</script>
+} 

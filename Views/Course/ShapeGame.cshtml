@@ -1,0 +1,55 @@
+@{
+    ViewData["Title"] = "Şekil Bulma Oyunu";
+    Layout = "_Layout";
+}
+<h2 class="text-center my-4">Şekil Bulma Oyunu</h2>
+<p class="text-center">Aşağıda verilen şekli bul ve tıkla!</p>
+<div class="text-center mb-4">
+    <span id="shape-question" style="font-size:1.5rem; font-weight:bold;"></span>
+</div>
+<div class="d-flex justify-content-center flex-wrap" id="shape-buttons" style="gap: 20px; min-height: 100px;"></div>
+<div class="text-center mt-4">
+    <button class="btn btn-primary" onclick="startShapeGame()">Yeniden Başlat</button>
+    <span id="shape-status" class="ms-3"></span>
+</div>
+@section Scripts {
+<script>
+    const shapes = [
+        { name: 'Daire', icon: '⚪' },
+        { name: 'Kare', icon: '⬜' },
+        { name: 'Üçgen', icon: '🔺' },
+        { name: 'Yıldız', icon: '⭐' },
+        { name: 'Dikdörtgen', icon: '▭' },
+        { name: 'Kalp', icon: '❤️' }
+    ];
+    let correctShape = null;
+    function startShapeGame() {
+        document.getElementById('shape-status').textContent = '';
+        correctShape = shapes[Math.floor(Math.random() * shapes.length)];
+        document.getElementById('shape-question').textContent = correctShape.name + ' şeklini bul!';
+        const shuffled = [...shapes].sort(() => Math.random() - 0.5);
+        const btnDiv = document.getElementById('shape-buttons');
+        btnDiv.innerHTML = '';
+        shuffled.forEach(shape => {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-lg btn-secondary';
+            btn.style.width = '100px';
+            btn.style.height = '60px';
+            btn.style.fontWeight = 'bold';
+            btn.style.fontSize = '1.2rem';
+            btn.innerHTML = shape.icon + '<br>' + shape.name;
+            btn.onclick = function() { selectShape(shape); };
+            btnDiv.appendChild(btn);
+        });
+    }
+    function selectShape(shape) {
+        if (shape.name === correctShape.name) {
+            document.getElementById('shape-status').textContent = 'Tebrikler, doğru şekli seçtin!';
+        } else {
+            document.getElementById('shape-status').textContent = 'Yanlış, tekrar dene!';
+        }
+    }
+    // Başlangıçta başlat
+    startShapeGame();
+</script>
+} 

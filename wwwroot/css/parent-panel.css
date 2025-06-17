@@ -1,0 +1,92 @@
+/* NAVBAR STYLING */
+.parent-navbar {
+    background: #fff !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 0.8rem 0;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+/* MAIN MENU ITEMS */
+.nav-primary .nav-item {
+    margin: 0 0.25rem;
+}
+
+.nav-primary .nav-link {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+    color: #222;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.nav-primary .nav-link:hover,
+.nav-primary .nav-link.active {
+    background: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+
+/* PROFILE SECTION */
+.nav-secondary .btn {
+    padding: 0.4rem 0.8rem;
+    font-weight: 500;
+}
+
+.profile-navbar-link {
+    color: #495057;
+    transition: color 0.2s;
+}
+
+.profile-navbar-link:hover {
+    color: #0d6efd;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+/* MAIN CONTENT AREA */
+.parent-content {
+    min-height: calc(100vh - 120px);
+    padding-top: 2rem;
+    background-color: #f8f9fa;
+}
+
+/* MODAL ENHANCEMENTS */
+.modal-content {
+    border-radius: 0.8rem;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    padding: 1.2rem 1.5rem;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+}
+
+/* RESPONSIVE ADJUSTMENTS */
+@media (max-width: 992px) {
+    .nav-primary {
+        margin: 1rem 0;
+    }
+    
+    .nav-secondary {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
+        width: 100%;
+        justify-content: flex-end;
+    }
+}

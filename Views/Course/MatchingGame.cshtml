@@ -1,0 +1,94 @@
+@{
+    ViewData["Title"] = "Eşleştirme Oyunu";
+    Layout = "_Layout";
+}
+<h2 class="text-center my-4">Eşleştirme Oyunu</h2>
+<p class="text-center">Aynı olan kartları bul ve eşleştir!</p>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+    <div id="matching-board" class="d-flex flex-wrap" style="width:320px; height:320px; border:2px solid #6B48FF;"></div>
+</div>
+<div class="text-center mt-4">
+    <button class="btn btn-primary" onclick="startMatchingGame()">Yeniden Başlat</button>
+    <span id="matching-status" class="ms-3"></span>
+</div>
+@section Scripts {
+<script>
+    const matchingSize = 4; // 4x4
+    let matchingCards = [];
+    let flipped = [];
+    let matched = [];
+    let lockBoard = false;
+
+    function startMatchingGame() {
+        // Kartları oluştur
+        let values = [];
+        for (let i = 1; i <= (matchingSize * matchingSize) / 2; i++) {
+            values.push(i);
+            values.push(i);
+        }
+        values = shuffle(values);
+        matchingCards = values;
+        flipped = [];
+        matched = [];
+        lockBoard = false;
+        drawMatchingBoard();
+        document.getElementById('matching-status').textContent = '';
+    }
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function drawMatchingBoard() {
+        const boardDiv = document.getElementById('matching-board');
+        boardDiv.innerHTML = '';
+        for (let i = 0; i < matchingCards.length; i++) {
+            const card = document.createElement('div');
+            card.className = 'matching-card';
+            card.style.width = '25%';
+            card.style.height = '25%';
+            card.style.display = 'flex';
+            card.style.alignItems = 'center';
+            card.style.justifyContent = 'center';
+            card.style.fontSize = '2rem';
+            card.style.border = '1px solid #ccc';
+            card.style.background = matched.includes(i) ? '#b2f2bb' : (flipped.includes(i) ? '#fff3cd' : '#6B48FF');
+            card.style.color = flipped.includes(i) || matched.includes(i) ? '#333' : 'transparent';
+            card.style.cursor = matched.includes(i) ? 'default' : 'pointer';
+            card.style.boxSizing = 'border-box';
+            card.style.userSelect = 'none';
+            card.style.transition = 'background 0.2s, color 0.2s';
+            card.textContent = matchingCards[i];
+            card.onclick = function() { flipCard(i); };
+            boardDiv.appendChild(card);
+        }
+    }
+
+    function flipCard(index) {
+        if (lockBoard || matched.includes(index) || flipped.includes(index)) return;
+        flipped.push(index);
+        drawMatchingBoard();
+        if (flipped.length === 2) {
+            lockBoard = true;
+            setTimeout(() => {
+                if (matchingCards[flipped[0]] === matchingCards[flipped[1]]) {
+                    matched.push(flipped[0], flipped[1]);
+                    if (matched.length === matchingCards.length) {
+                        document.getElementById('matching-status').textContent = 'Tebrikler! Tüm kartları eşleştirdin!';
+                    }
+                }
+                flipped = [];
+                lockBoard = false;
+                drawMatchingBoard();
+            }, 800);
+        }
+    }
+
+    // Başlangıçta oluştur
+    startMatchingGame();
+</script>
+} 

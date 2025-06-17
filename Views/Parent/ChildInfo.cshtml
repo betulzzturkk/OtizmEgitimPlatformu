@@ -1,0 +1,71 @@
+@model List<AutismEducationPlatform.Web.Models.ViewModels.ChildViewModel>
+@{
+    ViewData["Title"] = "Çocuk Bilgileri";
+    Layout = "~/Views/Shared/_ParentLayout.cshtml";
+}
+<link rel="stylesheet" href="/css/child-info.css" />
+<div class="container py-4">
+    @if (TempData["ChildSuccess"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert" style="max-width:600px;margin:20px auto 0 auto;">
+            @TempData["ChildSuccess"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+        </div>
+    }
+    <h2 class="mb-4" style="font-weight:700; color:#2193b0; letter-spacing:1px;">Çocuk Bilgileri</h2>
+    @if (Model != null && Model.Count > 0)
+    {
+        @foreach (var child in Model)
+        {
+            <div class="child-info-box">
+                <div class="child-info-img">
+                    <img src="/images/children/cocuk.jpg" alt="Çocuk Fotoğrafı" />
+                </div>
+                <div class="child-info-title">@child.Name (@child.Age) yaşında</div>
+                <div class="child-info-detail">
+                    <span class="child-info-label">Tanı:</span> @(string.IsNullOrWhiteSpace(child.Diagnosis) ? "Belirtilmemiş" : child.Diagnosis)
+                </div>
+                <div class="child-info-detail">
+                    <span class="child-info-label">Özel Gereksinimler:</span> @(string.IsNullOrWhiteSpace(child.SpecialNeeds) ? "Belirtilmemiş" : child.SpecialNeeds)
+                </div>
+                <div class="child-info-detail">
+                    <span class="child-info-label">Eklenme Tarihi:</span> @child.CreatedAt.ToShortDateString()
+                </div>
+                <div class="child-info-detail">
+                    <span class="child-info-label">Notlar:</span> <span class="text-white-50">@(string.IsNullOrWhiteSpace(child.Notes) ? "Henüz not eklenmemiş" : child.Notes)</span>
+                </div>
+                <div class="child-info-tags mt-4 pt-2 border-top" style="border-color:rgba(255,255,255,0.2)!important;">
+                    <span class="child-info-label">İlgi Alanları:</span>
+                    @if (!string.IsNullOrWhiteSpace(child.Interests))
+                    {
+                        var tags = child.Interests.Split(',');
+                        foreach (var tag in tags)
+                        {
+                            var t = tag.Trim().ToLower();
+                            string icon = t switch {
+                                var s when s.Contains("müzik") => "<i class='fas fa-music me-1'></i>",
+                                var s when s.Contains("resim") => "<i class='fas fa-paint-brush me-1'></i>",
+                                var s when s.Contains("dans") => "<i class='fas fa-person-dots-from-line me-1'></i>",
+                                var s when s.Contains("renk") => "<i class='fas fa-palette me-1'></i>",
+                                var s when s.Contains("hayvan") => "<i class='fas fa-dog me-1'></i>",
+                                var s when s.Contains("spor") => "<i class='fas fa-futbol me-1'></i>",
+                                _ => "<i class='fas fa-star me-1'></i>"
+                            };
+                            <span class="child-info-tag" style="font-size:1.15rem; padding:8px 20px; margin-bottom:10px;">
+                                @Html.Raw(icon) @tag.Trim()
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="child-info-tag" style="background:#eee; color:#888;">Belirtilmemiş</span>
+                    }
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info">Henüz çocuk bilgisi eklenmemiş.</div>
+    }
+</div> 

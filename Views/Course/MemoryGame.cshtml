@@ -1,0 +1,111 @@
+@{
+    ViewData["Title"] = "Hafıza Oyunu";
+    Layout = "_Layout";
+}
+<h2 class="text-center my-4">Hafıza Oyunu</h2>
+<p class="text-center">Kartların yerini aklında tut ve doğru sırayla tıkla!</p>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+    <div id="memory-board" class="d-flex flex-wrap" style="width:320px; height:320px; border:2px solid #6B48FF;"></div>
+</div>
+<div class="text-center mt-4">
+    <button class="btn btn-primary" onclick="startMemoryGame()">Yeniden Başlat</button>
+    <span id="memory-status" class="ms-3"></span>
+</div>
+@section Scripts {
+<script>
+    const memorySize = 4; // 4x4
+    let memoryOrder = [];
+    let memoryStep = 0;
+    let memoryActive = false;
+    let memoryMatched = [];
+
+    function startMemoryGame() {
+        memoryOrder = [];
+        for (let i = 0; i < memorySize * memorySize; i++) {
+            memoryOrder.push(i);
+        }
+        memoryOrder = shuffle(memoryOrder).slice(0, 5); // 5 kartlık bir dizi
+        memoryStep = 0;
+        memoryActive = false;
+        memoryMatched = [];
+        drawMemoryBoard();
+        showMemorySequence();
+        document.getElementById('memory-status').textContent = '';
+    }
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function drawMemoryBoard() {
+        const boardDiv = document.getElementById('memory-board');
+        boardDiv.innerHTML = '';
+        for (let i = 0; i < memorySize * memorySize; i++) {
+            const card = document.createElement('div');
+            card.className = 'memory-card';
+            card.style.width = '25%';
+            card.style.height = '25%';
+            card.style.display = 'flex';
+            card.style.alignItems = 'center';
+            card.style.justifyContent = 'center';
+            card.style.fontSize = '2rem';
+            card.style.border = '1px solid #ccc';
+            card.style.background = memoryMatched.includes(i) ? '#b2f2bb' : '#6B48FF';
+            card.style.color = memoryMatched.includes(i) ? '#333' : 'transparent';
+            card.style.cursor = memoryMatched.includes(i) ? 'default' : (memoryActive ? 'pointer' : 'not-allowed');
+            card.style.boxSizing = 'border-box';
+            card.style.userSelect = 'none';
+            card.style.transition = 'background 0.2s, color 0.2s';
+            card.textContent = i + 1;
+            card.onclick = function() { if(memoryActive) selectMemoryCard(i); };
+            boardDiv.appendChild(card);
+        }
+    }
+
+    function showMemorySequence() {
+        memoryActive = false;
+        let idx = 0;
+        function highlightNext() {
+            if (idx >= memoryOrder.length) {
+                drawMemoryBoard();
+                memoryActive = true;
+                return;
+            }
+            drawMemoryBoard();
+            const boardDiv = document.getElementById('memory-board');
+            const card = boardDiv.children[memoryOrder[idx]];
+            card.style.background = '#fff3cd';
+            card.style.color = '#333';
+            setTimeout(() => {
+                card.style.background = '#6B48FF';
+                card.style.color = 'transparent';
+                idx++;
+                setTimeout(highlightNext, 300);
+            }, 700);
+        }
+        setTimeout(highlightNext, 500);
+    }
+
+    function selectMemoryCard(index) {
+        if (index === memoryOrder[memoryStep]) {
+            memoryMatched.push(index);
+            memoryStep++;
+            drawMemoryBoard();
+            if (memoryStep === memoryOrder.length) {
+                document.getElementById('memory-status').textContent = 'Tebrikler! Doğru sırayla buldun!';
+                memoryActive = false;
+            }
+        } else {
+            document.getElementById('memory-status').textContent = 'Yanlış! Tekrar dene.';
+            memoryActive = false;
+        }
+    }
+
+    // Başlangıçta oluştur
+    startMemoryGame();
+</script>
+} 

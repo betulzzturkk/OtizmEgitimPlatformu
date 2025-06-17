@@ -1,0 +1,331 @@
+@model List<AutismEducationPlatform.Web.Models.ViewModels.TrafficSignViewModel>
+
+@{
+    ViewData["Title"] = "Trafik İşaretleri";
+}
+
+<link rel="stylesheet" href="/css/animals-bg.css" />
+<div class="body-animals-bg" style="background-image: url('/images/animals/animal-bg-pattern.png'), linear-gradient(135deg, #FFB347 0%, #6B48FF 50%, #FF6B6B 100%); background-size: 300px, cover; background-repeat: repeat;">
+    <div class="cloud"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+    <div class="container py-5">
+        <div class="row justify-content-center mb-3">
+            <div class="col-lg-10">
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <div class="alert alert-info text-center mb-4" style="font-size:1.2rem;">
+                        <i class="fas fa-info-circle me-2"></i>
+                        İlerlemenizin kaydedilmesi için <a href="/Account/Login" class="alert-link">giriş yapın</a> veya <a href="/Account/Register" class="alert-link">kaydolun</a>.
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-3" style="font-size:2.5rem; font-weight:800; color:#6B48FF;">
+                    <i class="fas fa-traffic-light me-2"></i> Trafik İşaretleri
+                </h2>
+                <p class="lead">
+                    Trafik işaretlerini tanı, seslerini dinle ve ilerlemeni takip et!
+                </p>
+            </div>
+        </div>
+        <div class="row g-4">
+            @foreach (var sign in Model)
+            {
+                var cardColor = sign.Name switch {
+                    "Dur" => "background: linear-gradient(135deg, #FFB347 0%, #FF6B6B 100%);",
+                    "Bisiklet" => "background: linear-gradient(135deg, #8C6CFF 0%, #1E90FF 100%);",
+                    "Hastane" => "background: linear-gradient(135deg, #4CAF50 0%, #17A2B8 100%);",
+                    "Işık" => "background: linear-gradient(135deg, #1E90FF 0%, #6B48FF 100%);",
+                    "Okul" => "background: linear-gradient(135deg, #FFC107 0%, #4CAF50 100%);",
+                    "Park" => "background: linear-gradient(135deg, #FFB347 0%, #4D96FF 100%);",
+                    "Yaya" => "background: linear-gradient(135deg, #6B48FF 0%, #FF6B6B 100%);",
+                    "Yön" => "background: linear-gradient(135deg, #17A2B8 0%, #FFB347 100%);",
+                    _ => "background: linear-gradient(135deg, #FFB347 0%, #6B48FF 100%);"
+                };
+                <div class="col-md-6 col-lg-4" data-aos="zoom-in">
+                    <div class="card h-100 shadow-lg border-0 text-center p-4" style="@cardColor color: #fff; border-radius: 25px; min-height: 420px;">
+                        <img src="@sign.ImagePath" alt="@sign.Name" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover; background: #fff;">
+                        <h4>@sign.Name</h4>
+                        <p>@sign.Description</p>
+                        <button class="btn btn-outline-light mb-3" onclick="playSignSound('@sign.SoundPath', '@sign.Name', this)"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+                        <div class="progress my-3" style="height: 20px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: @sign.Progress%" aria-valuenow="@sign.Progress" aria-valuemin="0" aria-valuemax="100">@sign.Progress%</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span id="toastMessage">Ses çalma özelliği başlatılıyor...</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-scale {
+        transition: transform 0.3s ease;
+    }
+    
+    .hover-scale:hover {
+        transform: translateY(-5px);
+    }
+    
+    .play-button {
+        transition: all 0.3s ease;
+    }
+    
+    .play-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .play-button.playing {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    
+    .card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .badge {
+        font-size: 0.8rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .toast {
+        opacity: 0.95;
+    }
+
+    .play-button:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        let currentUtterance = null;
+        let currentButton = null;
+        let toast = null;
+        let synth = null;
+        let isSpeechSupported = false;
+        let isInitialized = false;
+
+        // Speech Synthesis'i başlat
+        async function initializeSpeechSynthesis() {
+            try {
+                // Speech Synthesis API'nin varlığını kontrol et
+                if (typeof speechSynthesis === 'undefined') {
+                    throw new Error('Speech Synthesis API desteklenmiyor.');
+                }
+
+                synth = window.speechSynthesis;
+
+                // Sesleri yükle ve Türkçe sesi bul
+                await loadVoices();
+                
+                // Başarılı başlatma
+                isSpeechSupported = true;
+                isInitialized = true;
+                enableAllButtons();
+                
+            } catch (error) {
+                console.error('Speech Synthesis başlatma hatası:', error);
+                document.getElementById('toastMessage').textContent = 'Ses çalma özelliği bu tarayıcıda desteklenmiyor.';
+                toast.show();
+                disableAllButtons();
+            }
+        }
+
+        // Sesleri yükle
+        async function loadVoices() {
+            return new Promise((resolve, reject) => {
+                let voices = synth.getVoices();
+                
+                if (voices.length > 0) {
+                    setTurkishVoice(voices);
+                    resolve();
+                } else {
+                    // Chrome için voiceschanged event'ini dinle
+                    synth.onvoiceschanged = () => {
+                        voices = synth.getVoices();
+                        setTurkishVoice(voices);
+                        resolve();
+                    };
+
+                    // 3 saniye içinde sesler yüklenmezse hata ver
+                    setTimeout(() => {
+                        if (!window.selectedVoice) {
+                            reject(new Error('Sesler yüklenemedi.'));
+                        }
+                    }, 3000);
+                }
+            });
+        }
+
+        // Türkçe sesi ayarla
+        function setTurkishVoice(voices) {
+            // Önce Microsoft Türkçe sesini dene
+            let turkishVoice = voices.find(voice => 
+                voice.name.includes('Microsoft') && voice.lang.includes('tr'));
+            
+            // Bulunamazsa herhangi bir Türkçe ses dene
+            if (!turkishVoice) {
+                turkishVoice = voices.find(voice => voice.lang.includes('tr'));
+            }
+            
+            // O da bulunamazsa varsayılan bir ses kullan
+            if (!turkishVoice) {
+                turkishVoice = voices[0];
+            }
+
+            window.selectedVoice = turkishVoice;
+        }
+
+        // Tüm butonları etkinleştir
+        function enableAllButtons() {
+            document.querySelectorAll('.play-button').forEach(button => {
+                button.disabled = false;
+            });
+        }
+
+        // Tüm butonları devre dışı bırak
+        function disableAllButtons() {
+            document.querySelectorAll('.play-button').forEach(button => {
+                button.disabled = true;
+            });
+        }
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Toast'u başlat
+            toast = new bootstrap.Toast(document.querySelector('.toast'));
+            
+            // Başlangıçta tüm butonları devre dışı bırak
+            disableAllButtons();
+            
+            // Speech Synthesis'i başlat
+            await initializeSpeechSynthesis();
+        });
+
+        function resetButton(button) {
+            button.classList.remove('playing');
+            button.innerHTML = '<i class="fas fa-volume-up me-2"></i><span>Dinle</span>';
+        }
+
+        function setPlayingState(button) {
+            button.classList.add('playing');
+            button.innerHTML = '<i class="fas fa-pause me-2"></i><span>Durdur</span>';
+        }
+
+        function playAudio(button) {
+            // Speech Synthesis hazır değilse
+            if (!isSpeechSupported || !isInitialized) {
+                document.getElementById('toastMessage').textContent = 'Ses çalma özelliği henüz hazır değil.';
+                toast.show();
+                return;
+            }
+
+            // Eğer aynı ses çalınıyorsa durdur
+            if (currentButton === button && currentUtterance) {
+                synth.cancel();
+                resetButton(button);
+                currentUtterance = null;
+                currentButton = null;
+                return;
+            }
+
+            // Eğer başka bir ses çalınıyorsa onu durdur
+            if (currentUtterance) {
+                synth.cancel();
+                resetButton(currentButton);
+            }
+
+            // Yeni sesi çal
+            const name = button.dataset.name;
+            const description = button.dataset.description;
+            const text = `${name}. ${description}`;
+
+            try {
+                currentUtterance = new SpeechSynthesisUtterance(text);
+                currentButton = button;
+
+                // Sesi ayarla
+                if (window.selectedVoice) {
+                    currentUtterance.voice = window.selectedVoice;
+                }
+                currentUtterance.lang = 'tr-TR';
+                currentUtterance.rate = 0.9;
+                currentUtterance.pitch = 1;
+
+                // Ses bittiğinde
+                currentUtterance.onend = function() {
+                    resetButton(button);
+                    currentUtterance = null;
+                    currentButton = null;
+                };
+
+                // Hata durumunda
+                currentUtterance.onerror = function(event) {
+                    console.error('Ses çalma hatası:', event.error);
+                    document.getElementById('toastMessage').textContent = 'Ses çalma sırasında bir hata oluştu.';
+                    toast.show();
+                    resetButton(button);
+                    currentUtterance = null;
+                    currentButton = null;
+                };
+
+                setPlayingState(button);
+                synth.speak(currentUtterance);
+
+            } catch (error) {
+                console.error('Ses oluşturma hatası:', error);
+                document.getElementById('toastMessage').textContent = 'Ses oluşturulurken bir hata oluştu.';
+                toast.show();
+                resetButton(button);
+                currentUtterance = null;
+                currentButton = null;
+            }
+        }
+
+        function playSignSound(soundPath, signName, btn) {
+            var audio = new Audio(soundPath);
+            audio.play();
+            var progressBar = btn.closest('.card').querySelector('.progress-bar');
+            var currentProgress = parseInt(progressBar.style.width) || 0;
+            var newProgress = Math.min(100, currentProgress + 50);
+            progressBar.style.width = newProgress + '%';
+            progressBar.textContent = newProgress + '%';
+            progressBar.setAttribute('aria-valuenow', newProgress);
+            fetch('/Course/SaveTrafficSignProgress', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    signName: signName,
+                    progress: newProgress
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Uyarı kaldırıldı, tıklamada alert gösterilmeyecek
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+} 

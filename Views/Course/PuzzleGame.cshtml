@@ -1,0 +1,135 @@
+@{
+    ViewData["Title"] = "Puzzle Oyunu";
+    Layout = "_Layout";
+}
+<h2 class="text-center my-4">Puzzle Oyunu</h2>
+<p class="text-center">Parçaları sürükleyerek doğru yerlere bırak ve resmi tamamla!</p>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+    <div id="puzzle-board" class="d-flex flex-wrap" style="width:320px; height:320px; border:2px solid #6B48FF;">
+        <!-- Puzzle parçaları burada olacak -->
+    </div>
+</div>
+<div class="text-center mt-4">
+    <button class="btn btn-primary" onclick="shufflePuzzle()">Karıştır</button>
+    <span id="puzzle-status" class="ms-3"></span>
+</div>
+@section Scripts {
+<script>
+    const size = 4; // 4x4 puzzle
+    let board = [];
+    let empty = { row: size - 1, col: size - 1 };
+
+    function createPuzzle() {
+        const boardDiv = document.getElementById('puzzle-board');
+        boardDiv.innerHTML = '';
+        board = [];
+        for (let row = 0; row < size; row++) {
+            board[row] = [];
+            for (let col = 0; col < size; col++) {
+                const num = row * size + col + 1;
+                board[row][col] = num;
+                if (num === size * size) continue; // boş parça
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece';
+                piece.textContent = num;
+                piece.style.width = '25%';
+                piece.style.height = '25%';
+                piece.style.display = 'flex';
+                piece.style.alignItems = 'center';
+                piece.style.justifyContent = 'center';
+                piece.style.fontSize = '2rem';
+                piece.style.border = '1px solid #ccc';
+                piece.style.background = '#f8f9fa';
+                piece.style.cursor = 'pointer';
+                piece.style.boxSizing = 'border-box';
+                piece.style.userSelect = 'none';
+                piece.style.transition = 'background 0.2s';
+                piece.dataset.row = row;
+                piece.dataset.col = col;
+                piece.onclick = function() { movePiece(row, col); };
+                boardDiv.appendChild(piece);
+            }
+        }
+    }
+
+    function movePiece(row, col) {
+        if ((Math.abs(empty.row - row) === 1 && empty.col === col) ||
+            (Math.abs(empty.col - col) === 1 && empty.row === row)) {
+            // Parçayı boşluğa taşı
+            board[empty.row][empty.col] = board[row][col];
+            board[row][col] = size * size;
+            empty = { row, col };
+            drawPuzzle();
+            checkWin();
+        }
+    }
+
+    function drawPuzzle() {
+        const boardDiv = document.getElementById('puzzle-board');
+        boardDiv.innerHTML = '';
+        for (let row = 0; row < size; row++) {
+            for (let col = 0; col < size; col++) {
+                const num = board[row][col];
+                if (num === size * size) {
+                    const emptyDiv = document.createElement('div');
+                    emptyDiv.style.width = '25%';
+                    emptyDiv.style.height = '25%';
+                    emptyDiv.style.display = 'inline-block';
+                    boardDiv.appendChild(emptyDiv);
+                } else {
+                    const piece = document.createElement('div');
+                    piece.className = 'puzzle-piece';
+                    piece.textContent = num;
+                    piece.style.width = '25%';
+                    piece.style.height = '25%';
+                    piece.style.display = 'flex';
+                    piece.style.alignItems = 'center';
+                    piece.style.justifyContent = 'center';
+                    piece.style.fontSize = '2rem';
+                    piece.style.border = '1px solid #ccc';
+                    piece.style.background = '#f8f9fa';
+                    piece.style.cursor = 'pointer';
+                    piece.style.boxSizing = 'border-box';
+                    piece.style.userSelect = 'none';
+                    piece.style.transition = 'background 0.2s';
+                    piece.dataset.row = row;
+                    piece.dataset.col = col;
+                    piece.onclick = function() { movePiece(row, col); };
+                    boardDiv.appendChild(piece);
+                }
+            }
+        }
+    }
+
+    function shufflePuzzle() {
+        // Basit karıştırma
+        for (let i = 0; i < 1000; i++) {
+            const moves = [];
+            if (empty.row > 0) moves.push([empty.row - 1, empty.col]);
+            if (empty.row < size - 1) moves.push([empty.row + 1, empty.col]);
+            if (empty.col > 0) moves.push([empty.row, empty.col - 1]);
+            if (empty.col < size - 1) moves.push([empty.row, empty.col + 1]);
+            const move = moves[Math.floor(Math.random() * moves.length)];
+            movePiece(move[0], move[1]);
+        }
+        document.getElementById('puzzle-status').textContent = '';
+    }
+
+    function checkWin() {
+        let count = 1;
+        for (let row = 0; row < size; row++) {
+            for (let col = 0; col < size; col++) {
+                if (board[row][col] !== count && !(row === size - 1 && col === size - 1)) {
+                    return;
+                }
+                count++;
+            }
+        }
+        document.getElementById('puzzle-status').textContent = 'Tebrikler! Puzzle tamamlandı!';
+    }
+
+    // Başlangıçta oluştur
+    createPuzzle();
+    shufflePuzzle();
+</script>
+} 

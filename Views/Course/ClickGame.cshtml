@@ -1,0 +1,64 @@
+@{
+    ViewData["Title"] = "Hızlı Tıklama Oyunu";
+    Layout = "_Layout";
+}
+<h2 class="text-center my-4">Hızlı Tıklama Oyunu</h2>
+<p class="text-center">Buton ekranda belirdiğinde en hızlı şekilde tıkla! 5 tur oynanır, en iyi süreni gör.</p>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 300px;">
+    <div id="click-area" style="position:relative; width:320px; height:320px; background:#f8f9fa; border:2px solid #6B48FF;"></div>
+</div>
+<div class="text-center mt-4">
+    <button class="btn btn-primary" onclick="startClickGame()">Yeniden Başlat</button>
+    <span id="click-status" class="ms-3"></span>
+</div>
+@section Scripts {
+<script>
+    let clickRound = 0;
+    let clickTimes = [];
+    let clickStart = 0;
+    let clickBtn = null;
+    function startClickGame() {
+        clickRound = 0;
+        clickTimes = [];
+        document.getElementById('click-status').textContent = '';
+        nextClickRound();
+    }
+    function nextClickRound() {
+        const area = document.getElementById('click-area');
+        area.innerHTML = '';
+        clickBtn = document.createElement('button');
+        clickBtn.className = 'btn btn-danger';
+        clickBtn.textContent = 'Tıkla!';
+        clickBtn.style.position = 'absolute';
+        clickBtn.style.width = '80px';
+        clickBtn.style.height = '80px';
+        clickBtn.style.fontSize = '1.5rem';
+        // Rastgele konum
+        const left = Math.random() * 240;
+        const top = Math.random() * 240;
+        clickBtn.style.left = left + 'px';
+        clickBtn.style.top = top + 'px';
+        clickBtn.onclick = function() {
+            const elapsed = (performance.now() - clickStart) / 1000;
+            clickTimes.push(elapsed);
+            clickRound++;
+            if (clickRound < 5) {
+                setTimeout(nextClickRound, 700);
+            } else {
+                showClickResult();
+            }
+        };
+        setTimeout(() => {
+            area.appendChild(clickBtn);
+            clickStart = performance.now();
+        }, 700 + Math.random() * 1000);
+    }
+    function showClickResult() {
+        document.getElementById('click-area').innerHTML = '';
+        const best = Math.min(...clickTimes).toFixed(3);
+        document.getElementById('click-status').textContent = `En iyi süren: ${best} saniye!`;
+    }
+    // Başlangıçta başlat
+    startClickGame();
+</script>
+} 

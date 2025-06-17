@@ -1,0 +1,158 @@
+@model List<AutismEducationPlatform.Web.Models.ViewModels.MannersViewModel>
+
+@{
+    ViewData["Title"] = "Görgü Kuralları";
+}
+
+<link rel="stylesheet" href="/css/animals-bg.css" />
+
+<div class="body-animals-bg" style="background-image: url('/images/animals/animal-bg-pattern.png'), linear-gradient(135deg, #FFB347 0%, #6B48FF 50%, #FF6B6B 100%); background-size: 300px, cover; background-repeat: repeat;">
+    <div class="cloud"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+    <div class="container py-5">
+        <div class="row justify-content-center mb-3">
+            <div class="col-lg-10">
+                <div class="alert alert-info text-center mb-4" style="font-size:1.2rem;">
+                    <i class="fas fa-info-circle me-2"></i>
+                    İlerlemenizin kaydedilmesi için <a href="/Account/Login" class="alert-link">giriş yapın</a> veya <a href="/Account/Register" class="alert-link">kaydolun</a>.
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-3" style="font-size:2.5rem; font-weight:800; color:#6B48FF;" data-aos="fade-up">
+                    <i class="fas fa-hands-helping me-2"></i> Görgü Kuralları
+                </h2>
+                <p class="lead" data-aos="fade-up" data-aos-delay="100">
+                    Görgü kurallarını öğren, seslerini dinle ve ilerlemeni takip et!
+                </p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <!-- Teşekkür Etmek -->
+            <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="200">
+                <div class="card h-100 shadow-lg border-0 text-center p-4 animal-card" style="background: linear-gradient(135deg, #FFB347 0%, #FF6B6B 100%); color: #fff; border-radius: 25px;">
+                    <img src="/images/manners/tesekkur.jpg" alt="Teşekkür Etmek" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover;">
+                    <h4>Teşekkür Etmek</h4>
+                    <p>Başkalarına karşı saygı göstermenin bir yoludur.</p>
+                    <button class="btn btn-outline-light mb-3" onclick="playSoundAndProgress('/sounds/manners/tesekkuretmek.mp3', 'tesekkur')"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+                    <div class="progress my-3" style="height: 20px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" id="progress-tesekkur" role="progressbar" style="width: 0%">0%</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Özür Dilemek -->
+            <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="300">
+                <div class="card h-100 shadow-lg border-0 text-center p-4 animal-card" style="background: linear-gradient(135deg, #8C6CFF 0%, #1E90FF 100%); color: #fff; border-radius: 25px;">
+                    <img src="/images/manners/ozur.jpg" alt="Özür Dilemek" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover;">
+                    <h4>Özür Dilemek</h4>
+                    <p>Yanlış bir davranış sonrası özür dilemek önemlidir.</p>
+                    <button class="btn btn-outline-light mb-3" onclick="playSoundAndProgress('/sounds/manners/ozurdilemek.mp3', 'ozur')"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+                    <div class="progress my-3" style="height: 20px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" id="progress-ozur" role="progressbar" style="width: 0%">0%</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Selamlaşmak -->
+            <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="400">
+                <div class="card h-100 shadow-lg border-0 text-center p-4 animal-card" style="background: linear-gradient(135deg, #4CAF50 0%, #17A2B8 100%); color: #fff; border-radius: 25px;">
+                    <img src="/images/manners/selam.jpg" alt="Selamlaşmak" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover;">
+                    <h4>Selamlaşmak</h4>
+                    <p>İnsanlarla karşılaşınca selam vermek güzel bir davranıştır.</p>
+                    <button class="btn btn-outline-light mb-3" onclick="playSoundAndProgress('/sounds/manners/selamlasmak.mp3', 'selam')"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+                    <div class="progress my-3" style="height: 20px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" id="progress-selam" role="progressbar" style="width: 0%">0%</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Dinlemek -->
+            <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="500">
+                <div class="card h-100 shadow-lg border-0 text-center p-4 animal-card" style="background: linear-gradient(135deg, #FFB347 0%, #6B48FF 100%); color: #fff; border-radius: 25px;">
+                    <img src="/images/manners/dinle.jpg" alt="Dinlemek" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover;">
+                    <h4>Dinlemek</h4>
+                    <p>Karşımızdakini dikkatlice dinlemek önemlidir.</p>
+                    <button class="btn btn-outline-light mb-3" onclick="playSoundAndProgress('/sounds/manners/dinlemek.mp3', 'dinle')"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+                    <div class="progress my-3" style="height: 20px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" id="progress-dinle" role="progressbar" style="width: 0%">0%</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Kapıyı Çalmak -->
+            <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="600">
+                <div class="card h-100 shadow-lg border-0 text-center p-4 animal-card" style="background: linear-gradient(135deg, #8C6CFF 0%, #FFB347 100%); color: #fff; border-radius: 25px;">
+                    <img src="/images/manners/kapi.jpg" alt="Kapıyı Çalmak" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover;">
+                    <h4>Kapıyı Çalmak</h4>
+                    <p>Bir odaya girmeden önce kapıyı çalmak gerekir.</p>
+                    <button class="btn btn-outline-light mb-3" onclick="playSoundAndProgress('/sounds/manners/kapiyicalmak.mp3', 'kapi')"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+                    <div class="progress my-3" style="height: 20px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" id="progress-kapi" role="progressbar" style="width: 0%">0%</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Paylaşmak -->
+            <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="700">
+                <div class="card h-100 shadow-lg border-0 text-center p-4 animal-card" style="background: linear-gradient(135deg, #4CAF50 0%, #FF6B6B 100%); color: #fff; border-radius: 25px;">
+                    <img src="/images/manners/paylasma.png" alt="Paylaşmak" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover;">
+                    <h4>Paylaşmak</h4>
+                    <p>Arkadaşlarımızla eşyalarımızı paylaşmak güzel bir davranıştır.</p>
+                    <button class="btn btn-outline-light mb-3" onclick="playSoundAndProgress('/sounds/manners/paylasmak.mp3', 'paylasma')"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+                    <div class="progress my-3" style="height: 20px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" id="progress-paylasma" role="progressbar" style="width: 0%">0%</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sıra Beklemek -->
+            <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="800">
+                <div class="card h-100 shadow-lg border-0 text-center p-4 animal-card" style="background: linear-gradient(135deg, #1E90FF 0%, #FFB347 100%); color: #fff; border-radius: 25px;">
+                    <img src="/images/manners/sira.jpg" alt="Sıra Beklemek" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover;">
+                    <h4>Sıra Beklemek</h4>
+                    <p>Bir iş yaparken sıramızı beklemeliyiz.</p>
+                    <button class="btn btn-outline-light mb-3" onclick="playSoundAndProgress('/sounds/manners/sirabeklemek.mp3', 'sira')"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+                    <div class="progress my-3" style="height: 20px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" id="progress-sira" role="progressbar" style="width: 0%">0%</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sofra Adabı -->
+            <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="900">
+                <div class="card h-100 shadow-lg border-0 text-center p-4 animal-card" style="background: linear-gradient(135deg, #FF6B6B 0%, #8C6CFF 100%); color: #fff; border-radius: 25px;">
+                    <img src="/images/manners/sofra.png" alt="Sofra Adabı" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover;">
+                    <h4>Sofra Adabı</h4>
+                    <p>Yemek yerken sofra kurallarına uymalıyız.</p>
+                    <button class="btn btn-outline-light mb-3" onclick="playSoundAndProgress('/sounds/manners/sofraadabi.mp3', 'sofra')"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+                    <div class="progress my-3" style="height: 20px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" id="progress-sofra" role="progressbar" style="width: 0%">0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function playSoundAndProgress(soundPath, mannerName) {
+            var audio = new Audio(soundPath);
+            audio.play();
+            var progressBar = document.getElementById('progress-' + mannerName.toLowerCase());
+            var currentProgress = parseInt(progressBar.style.width) || 0;
+            var newProgress = currentProgress + 50; // 2 tıklamada %100
+            if (newProgress > 100) newProgress = 100;
+            progressBar.style.width = newProgress + '%';
+            progressBar.textContent = newProgress + '%';
+            progressBar.setAttribute('aria-valuenow', newProgress);
+            // AJAX ile ilerleme bilgisini kaydet
+            fetch('/Course/SaveMannerProgress', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ manner: mannerName, progress: newProgress })
+            })
+            .then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch((error) => console.error('Error:', error));
+        }
+    </script>
+} 

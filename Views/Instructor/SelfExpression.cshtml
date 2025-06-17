@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "Kendini İfade Etme";
+    Layout = "_InstructorLayout";
+}
+
+<div class="container py-5">
+    <div class="row mb-3">
+        <div class="col-12">
+            <a href="/Instructor/Education" class="btn btn-outline-secondary" style="position: absolute; left: 20px; top: 20px; z-index: 10;"><i class="fas fa-arrow-left me-2"></i>Geri Dön</a>
+        </div>
+    </div>
+    <div class="text-center mb-5" data-aos="fade-up">
+        <h1 class="display-4 fw-bold text-primary mb-3">Kendini İfade Etme</h1>
+        <p class="lead text-muted">Duygularımızı ve düşüncelerimizi ifade etmeyi öğrenelim!</p>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="card h-100 shadow-lg border-0 text-center p-4 manner-card" style="background: linear-gradient(135deg, #FFB347 0%, #6B48FF 100%); color: #fff; border-radius: 25px;">
+                <img src="/images/manners/dinle.jpg" alt="Dinlemek" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover;">
+                <h4>Dinlemek</h4>
+                <p>Karşımızdakini dikkatlice dinlemek önemlidir.</p>
+                <button class="btn btn-outline-light mb-3" onclick="playSound('/sounds/manners/dinlemek.mp3')"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="card h-100 shadow-lg border-0 text-center p-4 manner-card" style="background: linear-gradient(135deg, #FFB347 0%, #6B48FF 100%); color: #fff; border-radius: 25px;">
+                <img src="/images/manners/ozur.jpg" alt="Özür Dilemek" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover;">
+                <h4>Özür Dilemek</h4>
+                <p>Hata yaptığımızda özür dilemek gerekir.</p>
+                <button class="btn btn-outline-light mb-3" onclick="playSound('/sounds/manners/ozurdilemek.mp3')"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="card h-100 shadow-lg border-0 text-center p-4 manner-card" style="background: linear-gradient(135deg, #FFB347 0%, #6B48FF 100%); color: #fff; border-radius: 25px;">
+                <img src="/images/manners/kapi.jpg" alt="Kapıyı Çalmak" class="img-fluid rounded mb-3" style="height:180px; object-fit:cover;">
+                <h4>Kapıyı Çalmak</h4>
+                <p>Bir odaya girmeden önce kapıyı çalmalıyız.</p>
+                <button class="btn btn-outline-light mb-3" onclick="playSound('/sounds/manners/kapiyicalmak.mp3')"><i class="fas fa-volume-up me-2"></i>Sesi Dinle</button>
+            </div>
+        </div>
+        <!-- Diğer ifadeler de Parent/SelfExpression.cshtml'deki gibi eklenebilir -->
+    </div>
+</div>
+<script>
+function playSound(path) {
+    var audio = new Audio(path);
+    audio.play();
+}
+</script> 

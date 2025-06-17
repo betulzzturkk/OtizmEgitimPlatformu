@@ -1,0 +1,63 @@
+@{
+    ViewData["Title"] = "Hayvan Sesi Oyunu";
+    Layout = "_Layout";
+}
+<h2 class="text-center my-4">Hayvan Sesi Oyunu</h2>
+<p class="text-center">Hayvan sesini dinle ve doğru hayvanı seç!</p>
+<div class="text-center mb-4">
+    <button class="btn btn-info" onclick="playAnimalSound()">Sesi Dinle</button>
+</div>
+<div class="d-flex justify-content-center flex-wrap" id="animal-buttons" style="gap: 20px; min-height: 100px;"></div>
+<div class="text-center mt-4">
+    <button class="btn btn-primary" onclick="startAnimalGame()">Yeniden Başlat</button>
+    <span id="animal-status" class="ms-3"></span>
+</div>
+@section Scripts {
+<script>
+    const animals = [
+        { name: 'Kedi', sound: 'meow' },
+        { name: 'Köpek', sound: 'bark' },
+        { name: 'Kuş', sound: 'tweet' },
+        { name: 'İnek', sound: 'moo' }
+    ];
+    let correctAnimal = null;
+    function startAnimalGame() {
+        document.getElementById('animal-status').textContent = '';
+        correctAnimal = animals[Math.floor(Math.random() * animals.length)];
+        const shuffled = [...animals].sort(() => Math.random() - 0.5);
+        const btnDiv = document.getElementById('animal-buttons');
+        btnDiv.innerHTML = '';
+        shuffled.forEach(animal => {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-lg btn-warning';
+            btn.style.width = '120px';
+            btn.style.height = '60px';
+            btn.style.fontWeight = 'bold';
+            btn.style.fontSize = '1.2rem';
+            btn.textContent = animal.name;
+            btn.onclick = function() { selectAnimal(animal); };
+            btnDiv.appendChild(btn);
+        });
+    }
+    function playAnimalSound() {
+        // Gerçek ses dosyası yok, basit beep ile simüle
+        let msg = '';
+        switch (correctAnimal.sound) {
+            case 'meow': msg = 'Miyav miyav!'; break;
+            case 'bark': msg = 'Hav hav!'; break;
+            case 'tweet': msg = 'Cik cik!'; break;
+            case 'moo': msg = 'Mööö!'; break;
+        }
+        alert('Ses: ' + msg);
+    }
+    function selectAnimal(animal) {
+        if (animal.name === correctAnimal.name) {
+            document.getElementById('animal-status').textContent = 'Tebrikler, doğru hayvanı seçtin!';
+        } else {
+            document.getElementById('animal-status').textContent = 'Yanlış, tekrar dene!';
+        }
+    }
+    // Başlangıçta başlat
+    startAnimalGame();
+</script>
+} 

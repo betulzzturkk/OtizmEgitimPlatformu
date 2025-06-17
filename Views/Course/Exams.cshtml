@@ -1,0 +1,50 @@
+@model List<AutismEducationPlatform.Web.Models.ExamResult>
+@{
+    ViewBag.Title = "Sınavlar";
+    var examResults = ViewBag.ExamResults as List<AutismEducationPlatform.Web.Models.ExamResult> ?? new List<AutismEducationPlatform.Web.Models.ExamResult>();
+    var isAuthenticated = User.Identity.IsAuthenticated;
+}
+
+<h2 class="mb-4">Sınavlar</h2>
+<div class="row">
+    @for (int i = 1; i <= 50; i++)
+    {
+        var result = examResults.FirstOrDefault(r => r.ExamLevel == i.ToString());
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Sınav @i</h5>
+                    @if (result != null)
+                    {
+                        <p class="card-text">
+                            Sonuç: @result.Score puan<br />
+                            Doğru: @result.CorrectCount<br />
+                            Yanlış: @result.WrongCount
+                        </p>
+                        <button class="btn btn-secondary" disabled>Tekrar Sınava Giremezsiniz</button>
+                    }
+                    else
+                    {
+                        <p class="card-text">5 soru</p>
+                        @if (isAuthenticated)
+                        {
+                            <a href="@Url.Action("Exam", "Course", new { level = i })" class="btn btn-primary">Sınava Başla</a>
+                        }
+                        else
+                        {
+                            <button class="btn btn-primary" onclick="showLoginAlert()">Sınava Başla</button>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function showLoginAlert() {
+            alert('LÜTFEN GİRİŞ YAPIN VEYA KAYDOLUN');
+        }
+    </script>
+} 
