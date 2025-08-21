@@ -7,7 +7,7 @@ Bu proje, otizmli çocukların eğitimine yardımcı olmak için tasarlanmış b
 ### Kullanıcı Tipleri
 - **Veli**: Çocuklarının gelişimini takip edebilir
 - **Eğitmen**: Öğrenci gelişimini takip edebilir ve raporlar oluşturabilir
-- **Admin**: Sistem yönetimini gerçekleştirebilir
+- **Admin**: Sistem yönetimini gerçekleştirebilir.
 
 ### Eğitim Modülleri
 - Hayvanlar
